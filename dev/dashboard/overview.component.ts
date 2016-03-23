@@ -24,7 +24,7 @@ import {Router} from "angular2/router";
 
 export class OverviewComponent {
 
-    constructor(private _router:Router) {
+    constructor(private _router: Router) {
 
     }
 

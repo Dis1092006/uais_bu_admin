@@ -1,6 +1,5 @@
 import {Component} from "angular2/core";
-import {NgClass} from "angular2/common";
-import {Router, RouteParams} from "angular2/router";
+import {Router} from "angular2/router";
 import {Observable} from "rxjs/Observable";
 import {WSMonitoringData, MonitoringDataService} from "../shared/monitoring-data.service";
 
@@ -13,7 +12,7 @@ import {WSMonitoringData, MonitoringDataService} from "../shared/monitoring-data
 			<button (click)="onNavigate()">To overview page</button>
 			<div class="table-responsive">
                 <table class="table table-bordered table-condensed">
-                    <tr *ngFor="#item of data | async" [ngClass]="{warning: item.Status !== 'OK', danger: item.Status === 'Internal Server Error' || item.Status === 'Not Found' || item.Status === 'Bad Request'}">
+                    <tr *ngFor="#item of data | async" [ngClass]="{warning: item.Status !== 'OK', danger: item.Status === 'Internal Server Error' || item.Status === 'Not Found' || item.Status === 'Bad Request' || item.Status === 'Conflict' || item.Status === 'Forbidden'}">
                         <td>{{item.Name}}</td>
                         <td>{{item.Status}}</td>
                         <td>{{item.CheckTime}}</td>
@@ -22,8 +21,7 @@ import {WSMonitoringData, MonitoringDataService} from "../shared/monitoring-data
                 </table>
     		</div>
 		</div>
-	`,
-	directives: [NgClass]
+	`
 })
 export class DashboardWebServicesComponent {
 	data: Observable<WSMonitoringData[]>;

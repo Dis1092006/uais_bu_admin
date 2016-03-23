@@ -1,5 +1,5 @@
 import {Component} from 'angular2/core';
-import {RouteConfig, ROUTER_DIRECTIVES} from "angular2/router";
+import {RouteConfig, ROUTER_DIRECTIVES, Router} from "angular2/router";
 import {OverviewComponent} from "./dashboard/overview.component";
 import {DashboardWebServicesComponent} from "./dashboard/dashboard-web-services.component";
 import {MonitoringDataService} from "./shared/monitoring-data.service";
@@ -29,7 +29,16 @@ import {MonitoringDataService} from "./shared/monitoring-data.service";
             <div class="row">
                 <div class="col-sm-3 col-md-2 sidebar">
                     <ul class="nav nav-sidebar">
-                        <li><a [routerLink]="['WebServices']">Web-сервисы</a></li>
+                        <!--li><a [routerLink]="['WebServices']">Web-сервисы</a></li-->
+                        <li>
+                            <button type="button" (click)="onNavigateToWS()" class="btn" [ngClass]="{
+                                    'btn-danger': web_services_status === 'danger', 
+                                    'btn-warning': web_services_status === 'warning',
+                                    'btn-success': web_services_status !== 'danger' && web_services_status !== 'warning'
+                                }">
+                                Web-сервисы
+                            </button>
+                        </li>
                     </ul>
                 </div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -55,5 +64,15 @@ import {MonitoringDataService} from "./shared/monitoring-data.service";
     }
 ])
 export class AppComponent {
+    web_services_status: string;
 
+    constructor(private _router: Router, private _dataService: MonitoringDataService) {
+        this._dataService.web_services_status$.subscribe(value => {
+            this.web_services_status = value;
+        });
+    }
+
+    onNavigateToWS() {
+        this._router.navigate(['WebServices']);
+    }
 }
