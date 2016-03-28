@@ -1,6 +1,7 @@
 import {Component} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, Router} from "angular2/router";
 import {OverviewComponent} from "./dashboard/overview.component";
+import {ReferencesComponent} from "./references/references.component";
 import {DashboardWebServicesComponent} from "./dashboard/dashboard-web-services.component";
 import {MonitoringDataService} from "./shared/monitoring-data.service";
 
@@ -22,6 +23,9 @@ import {MonitoringDataService} from "./shared/monitoring-data.service";
                     <ul class="nav navbar-nav">
                         <li><a [routerLink]="['OverviewPage']">Обзор</a></li>
                     </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a [routerLink]="['ReferencesPage']">Справочники</a></li>
+                    </ul>
                 </div>
     		</div>
         </nav>
@@ -31,7 +35,11 @@ import {MonitoringDataService} from "./shared/monitoring-data.service";
                     <ul class="nav nav-sidebar">
                         <!--li><a [routerLink]="['WebServices']">Web-сервисы</a></li-->
                         <li>
-                            <button type="button" (click)="onNavigateToWS()" class="btn" [ngClass]="{
+                            <button 
+                                type="button" 
+                                (click)="onNavigateToWS()" 
+                                class="btn" 
+                                [ngClass]="{
                                     'btn-danger': web_services_status === 'danger', 
                                     'btn-warning': web_services_status === 'warning',
                                     'btn-success': web_services_status !== 'danger' && web_services_status !== 'warning'
@@ -56,6 +64,11 @@ import {MonitoringDataService} from "./shared/monitoring-data.service";
         name: 'OverviewPage',
         component: OverviewComponent,
         useAsDefault: true
+    },
+    {
+        path: '/references-page/...',
+        name: 'ReferencesPage',
+        component: ReferencesComponent
     },
     {
         path: '/dashboard-web-services',

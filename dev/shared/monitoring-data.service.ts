@@ -25,7 +25,7 @@ export class MonitoringDataService {
 	};
 
 	constructor(private _http: Http) {
-		this._baseUrl  = 'http://10.126.200.41:3000/api';
+		this._baseUrl  = 'http://10.126.200.41:3000/api/v1';
 
 		this.data$ = new Observable(observer => this._dataObserver = observer).share();
 		this.web_services_status$ = new Observable(observer => this._webServicesStatusObserver = observer).share();

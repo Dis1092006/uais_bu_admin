@@ -12,7 +12,12 @@ import {WSMonitoringData, MonitoringDataService} from "../shared/monitoring-data
 			<button (click)="onNavigate()">To overview page</button>
 			<div class="table-responsive">
                 <table class="table table-bordered table-condensed">
-                    <tr *ngFor="#item of data | async" [ngClass]="{warning: item.Status !== 'OK', danger: item.Status === 'Internal Server Error' || item.Status === 'Not Found' || item.Status === 'Bad Request' || item.Status === 'Conflict' || item.Status === 'Forbidden'}">
+                    <tr 
+                    	*ngFor="#item of data | async" 
+                    	[ngClass]="{
+                    		warning: item.Status !== 'OK', 
+                    		danger: item.Status === 'Internal Server Error' || item.Status === 'Not Found' || item.Status === 'Bad Request' || item.Status === 'Conflict' || item.Status === 'Forbidden'
+                    	}">
                         <td>{{item.Name}}</td>
                         <td>{{item.Status}}</td>
                         <td>{{item.CheckTime}}</td>
