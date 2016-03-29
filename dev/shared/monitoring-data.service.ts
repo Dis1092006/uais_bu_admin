@@ -31,13 +31,17 @@ export class MonitoringDataService {
 		this.web_services_status$ = new Observable(observer => this._webServicesStatusObserver = observer).share();
 
 		this._dataStore = { data: [] };
+
+		this.loadData();
 	}
 
 	loadData() {
 		this._http.get(`${this._baseUrl}/imd`).map(response => response.json()).subscribe(
 			data => {
 				this._dataStore.data = data.message;
-				this._dataObserver.next(this._dataStore.data);
+				if (this._dataObserver) {
+					this._dataObserver.next(this._dataStore.data);
+				}
 
 				// Определение общего статуса мониторинга web-сервисов.
 				let currentStatus = "ok";
@@ -52,5 +56,11 @@ export class MonitoringDataService {
 				this._webServicesStatusObserver.next(currentStatus);
 			},
 			error => console.log('Could not load data. Error: ' + error));
+	}
+
+	getData() {
+		if (this._dataObserver) {
+			this._dataObserver.next(this._dataStore.data);
+		}
 	}
 }

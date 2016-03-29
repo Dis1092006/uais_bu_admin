@@ -33,7 +33,15 @@ export class DashboardWebServicesComponent {
 
 	constructor(private _router: Router, private _dataService: MonitoringDataService) {
 		this.data = this._dataService.data$;
-		this._dataService.loadData();
+		this._dataService.getData();
+
+		var self = this;
+		setTimeout(
+			function refresh() {
+				self._dataService.loadData();
+				setTimeout(refresh, 60000);
+			},
+			60000);
 	}
 
 	onRefreshData() {
