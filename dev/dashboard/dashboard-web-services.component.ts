@@ -1,4 +1,4 @@
-import {Component} from "angular2/core";
+import {Component, OnInit} from "angular2/core";
 import {Router} from "angular2/router";
 import {Observable} from "rxjs/Observable";
 import {WSMonitoringData, MonitoringDataService} from "../shared/monitoring-data.service";
@@ -28,20 +28,17 @@ import {WSMonitoringData, MonitoringDataService} from "../shared/monitoring-data
 		</div>
 	`
 })
-export class DashboardWebServicesComponent {
+export class DashboardWebServicesComponent implements OnInit {
 	data: Observable<WSMonitoringData[]>;
 
 	constructor(private _router: Router, private _dataService: MonitoringDataService) {
-		this.data = this._dataService.data$;
-		this._dataService.getData();
+		this._dataService.data$.subscribe(() => {
+			this.data = this._dataService.data$;
+		});
+	}
 
-		var self = this;
-		setTimeout(
-			function refresh() {
-				self._dataService.loadData();
-				setTimeout(refresh, 60000);
-			},
-			60000);
+	ngOnInit() {
+		this._dataService.getData();
 	}
 
 	onRefreshData() {

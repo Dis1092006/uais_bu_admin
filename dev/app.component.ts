@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component, OnInit} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, Router} from "angular2/router";
 import {OverviewComponent} from "./dashboard/overview.component";
 import {ReferencesComponent} from "./references/references.component";
@@ -21,7 +21,7 @@ import {MonitoringDataService} from "./shared/monitoring-data.service";
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a [routerLink]="['OverviewPage']">Обзор</a></li>
+                        <li><a [routerLink]="['OverviewPage']" class="navigationLinkButton">Обзор</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a [routerLink]="['ReferencesPage']">Справочники</a></li>
@@ -33,19 +33,16 @@ import {MonitoringDataService} from "./shared/monitoring-data.service";
             <div class="row">
                 <div class="col-sm-3 col-md-2 sidebar">
                     <ul class="nav nav-sidebar">
-                        <!--li><a [routerLink]="['WebServices']">Web-сервисы</a></li-->
                         <li>
-                            <button 
-                                type="button" 
-                                (click)="onNavigateToWS()" 
+                            <a [routerLink]="['WebServices']"
                                 class="btn" 
                                 [ngClass]="{
-                                    'btn-danger': web_services_status === 'danger', 
-                                    'btn-warning': web_services_status === 'warning',
-                                    'btn-success': web_services_status !== 'danger' && web_services_status !== 'warning'
-                                }">
-                                Web-сервисы
-                            </button>
+                                    'btn-danger': wsStatus === 'danger', 
+                                    'btn-warning': wsStatus === 'warning',
+                                    'btn-success': wsStatus === 'ok'
+                                }"
+                            >Web-сервисы
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -76,13 +73,17 @@ import {MonitoringDataService} from "./shared/monitoring-data.service";
         component: DashboardWebServicesComponent
     }
 ])
-export class AppComponent {
-    web_services_status: string;
+export class AppComponent implements OnInit {
+    wsStatus: string;
 
     constructor(private _router: Router, private _dataService: MonitoringDataService) {
         this._dataService.web_services_status$.subscribe(value => {
-            this.web_services_status = value;
+            this.wsStatus = value;
         });
+    }
+
+    ngOnInit() {
+        this._dataService.getData();
     }
 
     onNavigateToWS() {
