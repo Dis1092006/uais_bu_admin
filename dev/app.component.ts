@@ -4,6 +4,7 @@ import {OverviewComponent} from "./dashboard/overview.component";
 import {ReferencesComponent} from "./references/references.component";
 import {DashboardWebServicesComponent} from "./dashboard/dashboard-web-services.component";
 import {MonitoringDataService} from "./shared/monitoring-data.service";
+import {DashboardDatabasesComponent} from "./dashboard/dashboard-databases.component";
 
 @Component({
     selector: 'uais_bu_admin',
@@ -43,6 +44,15 @@ import {MonitoringDataService} from "./shared/monitoring-data.service";
                                 }"
                             >Web-сервисы
                             </a>
+                            <a [routerLink]="['DatabasesPage']"
+                                class="btn" 
+                                [ngClass]="{
+                                    'btn-danger': wsStatus === 'danger', 
+                                    'btn-warning': wsStatus === 'warning',
+                                    'btn-success': wsStatus === 'ok'
+                                }"
+                            >Базы данных
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -71,6 +81,11 @@ import {MonitoringDataService} from "./shared/monitoring-data.service";
         path: '/dashboard-web-services',
         name: 'WebServices',
         component: DashboardWebServicesComponent
+    },
+    {
+        path: '/dashboard-databases-page/...',
+        name: 'DatabasesPage',
+        component: DashboardDatabasesComponent
     }
 ])
 export class AppComponent implements OnInit {
