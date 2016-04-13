@@ -1,9 +1,10 @@
 import {Component} from "angular2/core";
-import {Router, RouteConfig, ROUTER_DIRECTIVES} from "angular2/router";
+import {RouteConfig, ROUTER_DIRECTIVES, Router} from "angular2/router";
 import {ReferencesService} from "./references.service";
 import {ZonesComponent} from "./zones.component";
 import {NodesComponent} from "./nodes.component";
 import {ServersComponent} from "./servers.component";
+import {DatabasesComponent} from "./databases.component";
 
 @Component({
     selector: 'references-page',
@@ -13,6 +14,7 @@ import {ServersComponent} from "./servers.component";
             <li role="presentation" [ngClass]="{active: currentPage === 'ZonesPage'}"><a [routerLink]="['ZonesPage']" (click)="onTabClick('ZonesPage')">Зоны</a></li>
             <li role="presentation" [ngClass]="{active: currentPage === 'NodesPage'}"><a [routerLink]="['NodesPage']" (click)="onTabClick('NodesPage')">Ноды</a></li>
             <li role="presentation" [ngClass]="{active: currentPage === 'ServersPage'}"><a [routerLink]="['ServersPage']" (click)="onTabClick('ServersPage')">Серверы</a></li>
+            <li role="presentation" [ngClass]="{active: currentPage === 'DatabasesPage'}"><a [routerLink]="['DatabasesPage']" (click)="onTabClick('DatabasesPage')">Базы данных</a></li>
         </ul>
 		<div>
 			<router-outlet></router-outlet>
@@ -37,6 +39,11 @@ import {ServersComponent} from "./servers.component";
         path: '/servers-page',
         name: 'ServersPage',
         component: ServersComponent
+    },
+    {
+        path: '/databases-page',
+        name: 'DatabasesPage',
+        component: DatabasesComponent
     }
 ])
 export class ReferencesComponent {
