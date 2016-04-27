@@ -4,38 +4,42 @@ import {Observer} from "rxjs/Observer";
 import {Http} from "angular2/http";
 
 export interface IBackup {
-	date    : string;
-	name    : string;
+    database_name : string;
+	file_name     : string;
+    backup_date   : string;
+    backup_type   : string;
+    backup_size   : number;
 }
 
 @Injectable()
 export class DatabasesService {
 	private _baseUrl: string;
-	todayBackups$: Observable<IBackup[]>;
+	lastBackups$: Observable<IBackup[]>;
 	allBackups$: Observable<IBackup[]>;
-	private _todayBackupsObserver: Observer<IBackup[]>;
+	private _lastBackupsObserver: Observer<IBackup[]>;
 	private _allBackupsObserver: Observer<IBackup[]>;
 	private _dataStore: {
-		todayBackups: IBackup[],
+		lastBackups: IBackup[],
 		allBackups: IBackup[]
 	};
 
 	constructor(private _http: Http) {
 		this._baseUrl  = 'http://10.126.200.41:9000/api/v1';
 
-		this.todayBackups$ = new Observable(observer => this._todayBackupsObserver = observer).share();
+		this.lastBackups$ = new Observable(observer => this._lastBackupsObserver = observer).share();
 		this.allBackups$ = new Observable(observer => this._allBackupsObserver = observer).share();
 		this._dataStore = {
-			todayBackups: [],
+			lastBackups: [],
 			allBackups: []
 		};
 	}
 
-	loadTodayBackups() {
-		this._http.get(`${this._baseUrl}/backups/today`).map(response => response.json()).subscribe(
+	loadLastBackups() {
+		this._http.get(`${this._baseUrl}/backups/last`).map(response => response.json()).subscribe(
 			data => {
-				this._dataStore.todayBackups = data;
-				this._todayBackupsObserver.next(this._dataStore.todayBackups);
+				this._dataStore.lastBackups = data;
+				this._lastBackupsObserver.next(this._dataStore.lastBackups);
+				console.log('lastBackups: ' + data);
 			},
 			error => console.log('Could not load today backups. Error: ' + JSON.stringify(error)));
 	}

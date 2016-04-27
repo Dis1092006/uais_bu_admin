@@ -1,10 +1,10 @@
 import {Component, OnInit} from 'angular2/core';
 import {RouteConfig, ROUTER_DIRECTIVES, Router} from "angular2/router";
 import {OverviewComponent} from "./dashboard/overview.component";
-import {ReferencesComponent} from "./references/references.component";
+import {ReferencesComponent} from "./references/references-page.component";
 import {DashboardWebServicesComponent} from "./dashboard/dashboard-web-services.component";
 import {MonitoringDataService} from "./shared/monitoring-data.service";
-import {DashboardDatabasesComponent} from "./dashboard/dashboard-databases.component";
+import {DashboardBackupsComponent} from "./dashboard/dashboard-backups.component";
 
 @Component({
     selector: 'uais_bu_admin',
@@ -44,14 +44,14 @@ import {DashboardDatabasesComponent} from "./dashboard/dashboard-databases.compo
                                 }"
                             >Web-сервисы
                             </a>
-                            <a [routerLink]="['DatabasesPage']"
+                            <a [routerLink]="['BackupsPage']"
                                 class="btn" 
                                 [ngClass]="{
                                     'btn-danger': wsStatus === 'danger', 
                                     'btn-warning': wsStatus === 'warning',
                                     'btn-success': wsStatus === 'ok'
                                 }"
-                            >Базы данных
+                            >Архивы баз данных
                             </a>
                         </li>
                     </ul>
@@ -83,9 +83,9 @@ import {DashboardDatabasesComponent} from "./dashboard/dashboard-databases.compo
         component: DashboardWebServicesComponent
     },
     {
-        path: '/dashboard-databases-page/...',
-        name: 'DatabasesPage',
-        component: DashboardDatabasesComponent
+        path: '/dashboard-backups-page/...',
+        name: 'BackupsPage',
+        component: DashboardBackupsComponent
     }
 ])
 export class AppComponent implements OnInit {

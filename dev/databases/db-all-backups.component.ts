@@ -3,7 +3,7 @@ import {Observable} from "rxjs/Observable";
 import {DatabasesService, IBackup} from "./databases.service";
 
 @Component({
-	selector: 'today-db-backups',
+	selector: 'db-all-backups',
 	template: `
         <div class="table-responsive">
             <table class="table table-bordered table-condensed">
@@ -15,11 +15,11 @@ import {DatabasesService, IBackup} from "./databases.service";
         </div>
      `
 })
-export class TodayDBBackupsComponent {
+export class DBAllBackupsComponent {
 	backups: Observable<IBackup[]>;
 
 	constructor(private _databasesService: DatabasesService) {
-		this.backups = this._databasesService.todayBackups$;
-		this._databasesService.loadTodayBackups();
+		this.backups = this._databasesService.allBackups$;
+		this._databasesService.loadAllBackups();
 	}
 }
