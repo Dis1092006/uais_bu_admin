@@ -26,7 +26,8 @@ export class MonitoringDataService {
 
 
 	constructor(private _http: Http) {
-		this._baseUrl  = 'http://10.126.200.41:3000/api/v1';
+		this._baseUrl  = 'http://10.126.200.41:9000/api/v1';
+		//this._baseUrl  = 'http://localhost:9000/api/v1';
 
 		this.data$ = new Observable(observer => this._dataObserver = observer).share();
 		this.web_services_status$ = new Observable(observer => this._webServicesStatusObserver = observer).share();
@@ -52,16 +53,17 @@ export class MonitoringDataService {
 			data => {
 				this._dataStore.data = data.message;
 				if (this._dataObserver) {
-					console.log("loadData, _dataObserver.next");
+					//console.log("loadData, _dataObserver.next");
 					this._dataObserver.next(this._dataStore.data);
 				}
 
 				// Определение общего статуса мониторинга web-сервисов.
+				this._dataStore.currentStatus = "none";
 				this._dataStore.data.forEach((item) => {
 				    if (item.Status === 'Internal Server Error' || item.Status === 'Not Found' || item.Status === 'Bad Request' || item.Status === 'Conflict' || item.Status === 'Forbidden') {
 						this._dataStore.currentStatus = "danger";
 				    }
-				    else if ((item.Status === 'Unauthorized' || item.Status === 'Unauthorized') && this._dataStore.currentStatus !== "danger") {
+				    else if ((item.Status === 'Unauthorized' || +item.CheckDuration > 1) && this._dataStore.currentStatus !== "danger") {
 						this._dataStore.currentStatus = "warning";
 				    }
 					else if (this._dataStore.currentStatus !== "danger" && this._dataStore.currentStatus !== "warning") {
@@ -69,11 +71,11 @@ export class MonitoringDataService {
 					}
 				});
 				if (this._webServicesStatusObserver) {
-					console.log("loadData, _webServicesStatusObserver.next");
+					//console.log("loadData, _webServicesStatusObserver.next");
 					this._webServicesStatusObserver.next(this._dataStore.currentStatus);
 				}
 			},
-			error => console.log('Could not load data. Error: ' + error));
+			error => console.log('Could not load data. Error: ' + JSON.stringify(error)));
 	}
 
 	getData() {
