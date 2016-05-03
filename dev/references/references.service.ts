@@ -18,12 +18,24 @@ export interface IServer {
     id      : string;
     name    : string;
     alias   : string;
+    node_id : string;
+    zone_id : string;
+}
+
+export interface IDBMSServer {
+    id              : string;
+    instance_name   : string;
+    port            : string;
+    user            : string;
+    password        : string;
+    server_id       : string;
 }
 
 export interface IDatabase {
-    id      : string;
-    name    : string;
-    server  : string;
+    id              : string;
+    name            : string;
+    recovery_model  : string;
+    dbms_server_id  : string;
 }
 
 @Injectable()
@@ -33,17 +45,20 @@ export class ReferencesService {
     zones$: Observable<IZone[]>;
     nodes$: Observable<INode[]>;
     servers$: Observable<INode[]>;
+    dbms_servers$: Observable<IDBMSServer[]>;
     databases$: Observable<IDatabase[]>;
     private _schemeObserver: Observer<string>;
     private _zonesObserver: Observer<IZone[]>;
     private _nodesObserver: Observer<INode[]>;
     private _serversObserver: Observer<IServer[]>;
+    private _dbms_serversObserver: Observer<IDBMSServer[]>;
     private _databasesObserver: Observer<IDatabase[]>;
     private _dataStore: {
         scheme:     string,
         zones:      IZone[],
         nodes:      INode[],
         servers:    IServer[],
+        dbms_servers:    IDBMSServer[],
         databases:    IDatabase[]
     };
 
@@ -55,12 +70,14 @@ export class ReferencesService {
         this.zones$ = new Observable(observer => this._zonesObserver = observer).share();
         this.nodes$ = new Observable(observer => this._nodesObserver = observer).share();
         this.servers$ = new Observable(observer => this._serversObserver = observer).share();
+        this.dbms_servers$ = new Observable(observer => this._dbms_serversObserver = observer).share();
         this.databases$ = new Observable(observer => this._databasesObserver = observer).share();
         this._dataStore = {
             scheme: "<table />",
             zones: [],
             nodes: [],
             servers: [],
+            dbms_servers: [],
             databases: []
         };
     }
@@ -114,6 +131,15 @@ export class ReferencesService {
                 this._serversObserver.next(this._dataStore.servers);
             },
             error => console.log('Could not load servers. Error: ' + JSON.stringify(error)));
+    }
+
+    loadDBMSServers() {
+        this._http.get(`${this._baseUrl}/dbms-servers`).map(response => response.json()).subscribe(
+            data => {
+                this._dataStore.dbms_servers = data;
+                this._dbms_serversObserver.next(this._dataStore.dbms_servers);
+            },
+            error => console.log('Could not load dbms servers. Error: ' + JSON.stringify(error)));
     }
 
     loadDatabases() {

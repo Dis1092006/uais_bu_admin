@@ -1,11 +1,12 @@
 import {Component} from "angular2/core";
 import {RouteConfig, ROUTER_DIRECTIVES, Router} from "angular2/router";
 import {ReferencesService} from "./references.service";
+import {SchemeComponent} from "./scheme.component";
 import {ZonesComponent} from "./zones.component";
 import {NodesComponent} from "./nodes.component";
 import {ServersComponent} from "./servers.component";
+import {DBMSServersComponent} from "./dbms-servers.component";
 import {DatabasesComponent} from "./databases.component";
-import {SchemeComponent} from "./scheme.component";
 
 @Component({
     selector: 'references-page',
@@ -16,6 +17,7 @@ import {SchemeComponent} from "./scheme.component";
             <li role="presentation" [ngClass]="{active: currentPage === 'ZonesPage'}"><a [routerLink]="['ZonesPage']" (click)="onTabClick('ZonesPage')">Зоны</a></li>
             <li role="presentation" [ngClass]="{active: currentPage === 'NodesPage'}"><a [routerLink]="['NodesPage']" (click)="onTabClick('NodesPage')">Ноды</a></li>
             <li role="presentation" [ngClass]="{active: currentPage === 'ServersPage'}"><a [routerLink]="['ServersPage']" (click)="onTabClick('ServersPage')">Серверы</a></li>
+            <li role="presentation" [ngClass]="{active: currentPage === 'DBMSServersPage'}"><a [routerLink]="['DBMSServersPage']" (click)="onTabClick('DBMSServersPage')">Серверы СУБД</a></li>
             <li role="presentation" [ngClass]="{active: currentPage === 'DatabasesPage'}"><a [routerLink]="['DatabasesPage']" (click)="onTabClick('DatabasesPage')">Базы данных</a></li>
         </ul>
 		<div>
@@ -46,6 +48,11 @@ import {SchemeComponent} from "./scheme.component";
         path: '/servers-page',
         name: 'ServersPage',
         component: ServersComponent
+    },
+    {
+        path: '/dbms-servers-page',
+        name: 'DBMSServersPage',
+        component: DBMSServersComponent
     },
     {
         path: '/databases-page',

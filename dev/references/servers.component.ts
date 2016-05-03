@@ -7,10 +7,19 @@ import {ReferencesService, IServer} from "./references.service";
     template: `
         <div class="table-responsive">
             <table class="table table-bordered table-condensed">
+               <tr>
+                    <th>Ид сервера</th>
+                    <th>Имя сервера</th>
+                    <th>Псевдоним</th>
+                    <th>Ид ноды</th>
+                    <th>Ид зоны</th>
+                </tr>
                 <tr *ngFor="#server of servers | async">
                     <td>{{server.id}}</td>
                     <td>{{server.name}}</td>
                     <td>{{server.alias}}</td>
+                    <td>{{server.node_id}}</td>
+                    <td>{{server.zone_id}}</td>
                 </tr>
             </table>
         </div>

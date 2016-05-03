@@ -7,6 +7,10 @@ import {ReferencesService, IZone} from "./references.service";
     template: `
         <div class="table-responsive">
             <table class="table table-bordered table-condensed">
+               <tr>
+                    <th>Ид зоны</th>
+                    <th>Имя зоны</th>
+                </tr>
                 <tr *ngFor="#zone of zones | async">
                     <td>{{zone.id}}</td>
                     <td>{{zone.name}}</td>
