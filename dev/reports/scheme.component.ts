@@ -1,6 +1,5 @@
 import {Component, OnInit} from "angular2/core";
-//import {Observable} from "rxjs/Observable";
-import {ReferencesService} from "./references.service";
+import {ReportsService} from "./reports.service";
 
 @Component({
     selector: 'scheme',
@@ -12,15 +11,14 @@ import {ReferencesService} from "./references.service";
 export class SchemeComponent implements OnInit{
     schemeTable: string;
 
-    constructor(private _referencesService: ReferencesService) {
+    constructor(private _reportsService: ReportsService) {
 
-        this._referencesService.scheme$.subscribe(value => {
-            console.log('schemeTable: ' + value);
+        this._reportsService.schemeTable$.subscribe(value => {
             this.schemeTable = value;
         });
     }
 
     ngOnInit() {
-        this._referencesService.loadScheme();
+        this._reportsService.loadScheme();
     }
 }

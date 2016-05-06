@@ -5,6 +5,9 @@ import {ReferencesComponent} from "./references/references-page.component";
 import {DashboardWebServicesComponent} from "./dashboard/dashboard-web-services.component";
 import {MonitoringDataService} from "./shared/monitoring-data.service";
 import {DashboardBackupsComponent} from "./dashboard/dashboard-backups.component";
+import {SchemeComponent} from "./reports/scheme.component";
+import {ReportsService} from "./reports/reports.service";
+import {DBFileSizesComponent} from "./reports/dbfilesizes.component";
 
 @Component({
     selector: 'uais_bu_admin',
@@ -18,7 +21,7 @@ import {DashboardBackupsComponent} from "./dashboard/dashboard-backups.component
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">УАИС БУ монитор</a>
+                    <a class="navbar-brand" href="#">УАИС БУ</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
@@ -44,15 +47,25 @@ import {DashboardBackupsComponent} from "./dashboard/dashboard-backups.component
                                 }"
                             >Web-сервисы
                             </a>
+                        </li>
+                        <li>
                             <a [routerLink]="['BackupsPage']"
                                 class="btn" 
                                 [ngClass]="{
-                                    'btn-danger': wsStatus === 'danger', 
-                                    'btn-warning': wsStatus === 'warning',
-                                    'btn-success': wsStatus === 'ok'
+                                    'btn-danger': backupStatus === 'danger', 
+                                    'btn-warning': backupStatus === 'warning',
+                                    'btn-success': backupStatus === 'ok'
                                 }"
                             >Архивы баз данных
                             </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-sidebar">
+                        <li>
+                            <a [routerLink]="['SchemePage']" class="btn">Ноды-базы</a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['DBFileSizesPage']" class="btn">Размеры баз данных</a>
                         </li>
                     </ul>
                 </div>
@@ -62,7 +75,7 @@ import {DashboardBackupsComponent} from "./dashboard/dashboard-backups.component
             </div>
         </div>
     `,
-    providers: [MonitoringDataService],
+    providers: [MonitoringDataService, ReportsService],
     directives: [ROUTER_DIRECTIVES]
 })
 @RouteConfig([
@@ -86,10 +99,21 @@ import {DashboardBackupsComponent} from "./dashboard/dashboard-backups.component
         path: '/dashboard-backups-page/...',
         name: 'BackupsPage',
         component: DashboardBackupsComponent
+    },
+    {
+        path: '/scheme-page',
+        name: 'SchemePage',
+        component: SchemeComponent
+    },
+    {
+        path: '/db-file-sizes-page',
+        name: 'DBFileSizesPage',
+        component: DBFileSizesComponent
     }
 ])
 export class AppComponent implements OnInit {
     wsStatus: string;
+    backupStatus: string;
 
     constructor(private _router: Router, private _dataService: MonitoringDataService) {
         this._dataService.web_services_status$.subscribe(value => {

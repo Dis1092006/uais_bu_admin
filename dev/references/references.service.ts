@@ -41,20 +41,17 @@ export interface IDatabase {
 @Injectable()
 export class ReferencesService {
     private _baseUrl: string;
-    scheme$: Observable<string>;
     zones$: Observable<IZone[]>;
     nodes$: Observable<INode[]>;
     servers$: Observable<INode[]>;
     dbms_servers$: Observable<IDBMSServer[]>;
     databases$: Observable<IDatabase[]>;
-    private _schemeObserver: Observer<string>;
     private _zonesObserver: Observer<IZone[]>;
     private _nodesObserver: Observer<INode[]>;
     private _serversObserver: Observer<IServer[]>;
     private _dbms_serversObserver: Observer<IDBMSServer[]>;
     private _databasesObserver: Observer<IDatabase[]>;
     private _dataStore: {
-        scheme:     string,
         zones:      IZone[],
         nodes:      INode[],
         servers:    IServer[],
@@ -66,44 +63,18 @@ export class ReferencesService {
         this._baseUrl  = 'http://10.126.200.41:9000/api/v1';
         //this._baseUrl  = 'http://localhost:9000/api/v1';
 
-        this.scheme$ = new Observable(observer => this._schemeObserver = observer).share();
         this.zones$ = new Observable(observer => this._zonesObserver = observer).share();
         this.nodes$ = new Observable(observer => this._nodesObserver = observer).share();
         this.servers$ = new Observable(observer => this._serversObserver = observer).share();
         this.dbms_servers$ = new Observable(observer => this._dbms_serversObserver = observer).share();
         this.databases$ = new Observable(observer => this._databasesObserver = observer).share();
         this._dataStore = {
-            scheme: "<table />",
             zones: [],
             nodes: [],
             servers: [],
             dbms_servers: [],
             databases: []
         };
-    }
-
-    loadScheme() {
-        var headers = new Headers();
-        headers.append('Accept', 'text/html');
-        headers.append('Content-Type', 'text/html');
-        this._http.get(`${this._baseUrl}/scheme/table`, {headers: headers})
-            .map(this.extractData)
-            .subscribe(
-                data => {
-                    this._dataStore.scheme = data;
-                    //console.log('data: ' + JSON.stringify(data));
-                    this._schemeObserver.next(this._dataStore.scheme);
-                },
-                error => console.log('Could not load scheme. Error: ' + JSON.stringify(error))
-            );
-    }
-
-    private extractData(res: Response) {
-        if (res.status < 200 || res.status >= 300) {
-            throw new Error('Bad response status: ' + res.status);
-        }
-        //console.log('data: ' + res.text());
-        return res.text();
     }
 
     loadZones() {
