@@ -4,11 +4,11 @@ import {Observer} from "rxjs/Observer";
 import {Http} from "angular2/http";
 
 export interface IBackup {
-    database_name : string;
-	file_name     : string;
-    backup_date   : string;
-    backup_type   : string;
-    backup_size   : number;
+    database_name	: string;
+	file_name		: string;
+    backup_date		: string;
+    backup_type		: string;
+    backup_size		: number;
 }
 
 @Injectable()
@@ -24,7 +24,8 @@ export class DatabasesService {
 	};
 
 	constructor(private _http: Http) {
-		this._baseUrl  = 'http://10.126.200.41:9000/api/v1';
+		this._baseUrl  = 'http://is19-t-web-13:9000/api/v1';
+		//this._baseUrl  = 'http://10.126.200.41:9000/api/v1';
 
 		this.lastBackups$ = new Observable(observer => this._lastBackupsObserver = observer).share();
 		this.allBackups$ = new Observable(observer => this._allBackupsObserver = observer).share();
@@ -39,7 +40,6 @@ export class DatabasesService {
 			data => {
 				this._dataStore.lastBackups = data;
 				this._lastBackupsObserver.next(this._dataStore.lastBackups);
-				console.log('lastBackups: ' + data);
 			},
 			error => console.log('Could not load today backups. Error: ' + JSON.stringify(error)));
 	}

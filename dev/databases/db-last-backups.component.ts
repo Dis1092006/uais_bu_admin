@@ -1,6 +1,7 @@
 import {Component} from "angular2/core";
 import {Observable} from "rxjs/Observable";
 import {DatabasesService, IBackup} from "./databases.service";
+import {DateFormatPipe} from "../shared/date-format.pipe";
 
 @Component({
 	selector: 'db-last-backups',
@@ -17,13 +18,14 @@ import {DatabasesService, IBackup} from "./databases.service";
                 <tr *ngFor="#backup of backups | async">
                     <td>{{backup.database_name}}</td>
                     <td>{{backup.file_name}}</td>
-                    <td>{{backup.backup_date}}</td>
+                    <td>{{backup.backup_date | dateFormat:"dd/MM/yyyy HH:mm:ss"}}</td>
                     <td>{{backup.backup_type}}</td>
                     <td>{{backup.backup_size}}</td>
                 </tr>
             </table>
         </div>
-     `
+     `,
+	pipes: [DateFormatPipe]
 })
 export class DBLastBackupsComponent {
 	backups: Observable<IBackup[]>;
