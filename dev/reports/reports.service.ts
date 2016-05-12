@@ -43,11 +43,11 @@ export class ReportsService {
             );
     }
 
-    loadDBFileSizesTable() {
+    loadDBFileSizesTable(reportDate: string) {
         var headers = new Headers();
         headers.append('Accept', 'text/html');
         headers.append('Content-Type', 'text/html');
-        this._http.get(`${this._baseUrl}/databases/table/2016-05-06`, {headers: headers})
+        this._http.get(`${this._baseUrl}/databases/table/${reportDate}`, {headers: headers})
             .map(response => response.text())
             .subscribe(
                 data => {
