@@ -1,5 +1,5 @@
-import {Component, OnInit} from "angular2/core";
-import {ROUTER_DIRECTIVES, RouteConfig, Router} from "angular2/router";
+import {Component, OnInit} from "@angular/core";
+import {ROUTER_DIRECTIVES, Routes} from "@angular/router";
 import {DatabasesService} from "./../databases/databases.service";
 import {DBAllBackupsComponent} from "../databases/db-all-backups.component";
 import {DBLastBackupsComponent} from "../databases/db-last-backups.component";
@@ -19,7 +19,7 @@ import {DBLastBackupsComponent} from "../databases/db-last-backups.component";
 	providers: [DatabasesService],
 	directives: [ROUTER_DIRECTIVES]
 })
-@RouteConfig([
+@Routes([
 	{
 		path: '/db-last-backups-page',
 		name: 'DBLastBackupsPage',
@@ -35,7 +35,7 @@ import {DBLastBackupsComponent} from "../databases/db-last-backups.component";
 export class DashboardBackupsComponent {
 	currentPage: string;
 
-	constructor(private _router: Router) {
+	constructor() {
 		this.currentPage = "DBLastBackupsPage";
 	}
 

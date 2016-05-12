@@ -1,5 +1,5 @@
-import {Component} from "angular2/core";
-import {RouteConfig, ROUTER_DIRECTIVES, Router} from "angular2/router";
+import {Component} from "@angular/core";
+import {ROUTER_DIRECTIVES, Routes} from "@angular/router";
 import {ReferencesService} from "./references.service";
 import {ZonesComponent} from "./zones.component";
 import {NodesComponent} from "./nodes.component";
@@ -25,7 +25,7 @@ import {DatabasesComponent} from "./databases.component";
     providers: [ReferencesService],
     directives: [ROUTER_DIRECTIVES]
 })
-@RouteConfig([
+@Routes([
     {
         path: '/zones-page',
         name: 'ZonesPage',
@@ -56,7 +56,7 @@ import {DatabasesComponent} from "./databases.component";
 export class ReferencesComponent {
     currentPage: string;
 
-    constructor(private _router: Router) {
+    constructor() {
         this.currentPage = "ZonesPage";
     }
 

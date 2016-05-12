@@ -1,5 +1,5 @@
-import {Component, OnInit} from 'angular2/core';
-import {RouteConfig, ROUTER_DIRECTIVES, Router} from "angular2/router";
+import {Component, OnInit} from '@angular/core';
+import {ROUTER_DIRECTIVES, Routes} from "@angular/router";
 import {OverviewComponent} from "./dashboard/overview.component";
 import {ReferencesComponent} from "./references/references-page.component";
 import {DashboardWebServicesComponent} from "./dashboard/dashboard-web-services.component";
@@ -78,7 +78,7 @@ import {DBFileSizesComponent} from "./reports/dbfilesizes.component";
     providers: [MonitoringDataService, ReportsService],
     directives: [ROUTER_DIRECTIVES]
 })
-@RouteConfig([
+@Routes([
     {
         path: '/overview-page',
         name: 'OverviewPage',
@@ -115,7 +115,7 @@ export class AppComponent implements OnInit {
     wsStatus: string;
     backupStatus: string;
 
-    constructor(private _router: Router, private _dataService: MonitoringDataService) {
+    constructor(private _dataService: MonitoringDataService) {
         this._dataService.web_services_status$.subscribe(value => {
             this.wsStatus = value;
         });
@@ -126,6 +126,6 @@ export class AppComponent implements OnInit {
     }
 
     onNavigateToWS() {
-        this._router.navigate(['WebServices']);
+        //this._router.navigate(['WebServices']);
     }
 }
