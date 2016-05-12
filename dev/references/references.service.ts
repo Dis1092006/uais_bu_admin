@@ -60,7 +60,8 @@ export class ReferencesService {
     };
 
     constructor(private _http: Http) {
-        this._baseUrl  = 'http://10.126.200.41:9000/api/v1';
+        this._baseUrl  = 'http://is19-t-web-13:9000/api/v1';
+        //this._baseUrl  = 'http://10.126.200.41:9000/api/v1';
         //this._baseUrl  = 'http://localhost:9000/api/v1';
 
         this.zones$ = new Observable(observer => this._zonesObserver = observer).share();

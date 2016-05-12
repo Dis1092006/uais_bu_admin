@@ -7,7 +7,7 @@ import {DatabasesService, IBackup} from "./databases.service";
 	template: `
         <div class="table-responsive">
             <table class="table table-bordered table-condensed">
-                <tr *ngFor="#backup of backups | async">
+                <tr *ngFor="let backup of backups | async">
                     <td>{{backup.date}}</td>
                     <td>{{backup.name}}</td>
                 </tr>

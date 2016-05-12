@@ -11,7 +11,7 @@ import {ReferencesService, IZone} from "./references.service";
                     <th>Ид зоны</th>
                     <th>Имя зоны</th>
                 </tr>
-                <tr *ngFor="#zone of zones | async">
+                <tr *ngFor="let zone of zones | async">
                     <td>{{zone.id}}</td>
                     <td>{{zone.name}}</td>
                 </tr>

@@ -15,7 +15,7 @@ import {ReferencesService, IDBMSServer} from "./references.service";
                     <th>Пароль</th>
                     <th>Ид сервера</th>
                 </tr>
-                <tr *ngFor="#dbms_server of dbms_servers | async">
+                <tr *ngFor="let dbms_server of dbms_servers | async">
                     <td>{{dbms_server.id}}</td>
                     <td>{{dbms_server.instance_name}}</td>
                     <td>{{dbms_server.port}}</td>

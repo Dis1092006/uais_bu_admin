@@ -15,12 +15,12 @@ import {DateFormatPipe} from "../shared/date-format.pipe";
                     <th>Тип архива</th>
                     <th>Размер архива</th>
                 </tr>
-                <tr *ngFor="#backup of backups | async">
+                <tr *ngFor="let backup of backups | async">
                     <td>{{backup.database_name}}</td>
                     <td>{{backup.file_name}}</td>
-                    <td>{{backup.backup_date | dateFormat:"dd/MM/yyyy HH:mm:ss"}}</td>
+                    <td>{{backup.backup_date | dateFormat:'dd/MM/yyyy HH:mm:ss'}}</td>
                     <td>{{backup.backup_type}}</td>
-                    <td>{{backup.backup_size}}</td>
+                    <td align="right">{{backup.backup_size}}</td>
                 </tr>
             </table>
         </div>

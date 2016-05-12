@@ -29,6 +29,6 @@ export class OverviewComponent {
     }
 
     onNavigateToWS() {
-        this._router.navigate(['WebServices']);
+        this._router.navigate(['/dashboard-web-services']);
     }
 }

@@ -9,8 +9,8 @@ import {DBLastBackupsComponent} from "../databases/db-last-backups.component";
 	template: `
 		<h1 class="page-header">Базы данных</h1>
 		<ul class="nav nav-tabs">
-            <li role="presentation" [ngClass]="{active: currentPage === 'DBLastBackupsPage'}"><a [routerLink]="['DBLastBackupsPage']" (click)="onTabClick('DBLastBackupsPage')">Последние архивы</a></li>
-            <li role="presentation" [ngClass]="{active: currentPage === 'DBAllBackupsPage'}"><a [routerLink]="['DBAllBackupsPage']" (click)="onTabClick('DBAllBackupsPage')">Все архивы</a></li>
+            <li role="presentation" [ngClass]="{active: currentPage === 'db-last-backups-page'}"><a [routerLink]="['db-last-backups-page']" (click)="onTabClick('db-last-backups-page')">Последние архивы</a></li>
+            <li role="presentation" [ngClass]="{active: currentPage === 'db-all-backups-page'}"><a [routerLink]="['db-all-backups-page']" (click)="onTabClick('db-all-backups-page')">Все архивы</a></li>
         </ul>
 		<div>
 			<router-outlet></router-outlet>
@@ -22,13 +22,10 @@ import {DBLastBackupsComponent} from "../databases/db-last-backups.component";
 @Routes([
 	{
 		path: '/db-last-backups-page',
-		name: 'DBLastBackupsPage',
-		component: DBLastBackupsComponent,
-		useAsDefault: true
+		component: DBLastBackupsComponent
 	},
 	{
 		path: '/db-all-backups-page',
-		name: 'DBAllBackupsPage',
 		component: DBAllBackupsComponent
 	}
 ])
@@ -36,7 +33,7 @@ export class DashboardBackupsComponent {
 	currentPage: string;
 
 	constructor() {
-		this.currentPage = "DBLastBackupsPage";
+		this.currentPage = "db-last-backups-page";
 	}
 
 	onTabClick(pageName) {

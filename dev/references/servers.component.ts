@@ -14,7 +14,7 @@ import {ReferencesService, IServer} from "./references.service";
                     <th>Ид ноды</th>
                     <th>Ид зоны</th>
                 </tr>
-                <tr *ngFor="#server of servers | async">
+                <tr *ngFor="let server of servers | async">
                     <td>{{server.id}}</td>
                     <td>{{server.name}}</td>
                     <td>{{server.alias}}</td>

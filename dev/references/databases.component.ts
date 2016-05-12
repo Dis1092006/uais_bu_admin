@@ -13,7 +13,7 @@ import {ReferencesService, IDatabase} from "./references.service";
                     <th>Модель восстановления</th>
                     <th>Ид сервера СУБД</th>
                 </tr>
-                <tr *ngFor="#database of databases | async">
+                <tr *ngFor="let database of databases | async">
                     <td>{{database.id}}</td>
                     <td>{{database.name}}</td>
                     <td>{{database.recovery_model}}</td>

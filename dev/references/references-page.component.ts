@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {ROUTER_DIRECTIVES, Routes} from "@angular/router";
+import {ROUTER_DIRECTIVES, Routes, Router} from "@angular/router";
 import {ReferencesService} from "./references.service";
 import {ZonesComponent} from "./zones.component";
 import {NodesComponent} from "./nodes.component";
@@ -8,15 +8,14 @@ import {DBMSServersComponent} from "./dbms-servers.component";
 import {DatabasesComponent} from "./databases.component";
 
 @Component({
-    selector: 'references-page',
     template: `
 		<h1 class="page-header">Справочники</h1>
 		<ul class="nav nav-tabs">
-            <li role="presentation" [ngClass]="{active: currentPage === 'ZonesPage'}"><a [routerLink]="['ZonesPage']" (click)="onTabClick('ZonesPage')">Зоны</a></li>
-            <li role="presentation" [ngClass]="{active: currentPage === 'NodesPage'}"><a [routerLink]="['NodesPage']" (click)="onTabClick('NodesPage')">Ноды</a></li>
-            <li role="presentation" [ngClass]="{active: currentPage === 'ServersPage'}"><a [routerLink]="['ServersPage']" (click)="onTabClick('ServersPage')">Серверы</a></li>
-            <li role="presentation" [ngClass]="{active: currentPage === 'DBMSServersPage'}"><a [routerLink]="['DBMSServersPage']" (click)="onTabClick('DBMSServersPage')">Серверы СУБД</a></li>
-            <li role="presentation" [ngClass]="{active: currentPage === 'DatabasesPage'}"><a [routerLink]="['DatabasesPage']" (click)="onTabClick('DatabasesPage')">Базы данных</a></li>
+            <li role="presentation" [ngClass]="{active: currentPage === 'zones-tab'}"><a [routerLink]="['zones-tab']" (click)="onTabClick('zones-tab')">Зоны</a></li>
+            <li role="presentation" [ngClass]="{active: currentPage === 'nodes-tab'}"><a [routerLink]="['nodes-tab']" (click)="onTabClick('nodes-tab')">Ноды</a></li>
+            <li role="presentation" [ngClass]="{active: currentPage === 'servers-tab'}"><a [routerLink]="['servers-tab']" (click)="onTabClick('servers-tab')">Серверы</a></li>
+            <li role="presentation" [ngClass]="{active: currentPage === 'dbms-servers-tab'}"><a [routerLink]="['dbms-servers-tab']" (click)="onTabClick('dbms-servers-tab')">Серверы СУБД</a></li>
+            <li role="presentation" [ngClass]="{active: currentPage === 'databases-tab'}"><a [routerLink]="['databases-tab']" (click)="onTabClick('databases-tab')">Базы данных</a></li>
         </ul>
 		<div>
 			<router-outlet></router-outlet>
@@ -27,40 +26,37 @@ import {DatabasesComponent} from "./databases.component";
 })
 @Routes([
     {
-        path: '/zones-page',
-        name: 'ZonesPage',
-        component: ZonesComponent,
-        useAsDefault: true
+        path: '/zones-tab',
+        component: ZonesComponent
     },
     {
-        path: '/nodes-page',
-        name: 'NodesPage',
+        path: '/nodes-tab',
         component: NodesComponent
     },
     {
-        path: '/servers-page',
-        name: 'ServersPage',
+        path: '/servers-tab',
         component: ServersComponent
     },
     {
-        path: '/dbms-servers-page',
-        name: 'DBMSServersPage',
+        path: '/dbms-servers-tab',
         component: DBMSServersComponent
     },
     {
-        path: '/databases-page',
-        name: 'DatabasesPage',
+        path: '/databases-tab',
         component: DatabasesComponent
     }
 ])
-export class ReferencesComponent {
-    currentPage: string;
+export class ReferencesPageComponent {
+    currentTab: string;
 
-    constructor() {
-        this.currentPage = "ZonesPage";
+    constructor(private _router: Router) { }
+
+    ngOnInit() {
+        this.currentTab = "zones-tab";
+        //this._router.navigate(['zones-tab']);
     }
 
-    onTabClick(pageName) {
-        this.currentPage = pageName;
+    onTabClick(tabName) {
+        this.currentTab = tabName;
     }
 }

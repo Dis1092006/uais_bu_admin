@@ -11,7 +11,7 @@ import {ReferencesService, INode} from "./references.service";
                     <th>Ид ноды</th>
                     <th>Имя ноды</th>
                 </tr>
-                <tr *ngFor="#node of nodes | async">
+                <tr *ngFor="let node of nodes | async">
                     <td>{{node.id}}</td>
                     <td>{{node.name}}</td>
                 </tr>

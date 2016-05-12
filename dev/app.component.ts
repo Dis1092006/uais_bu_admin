@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ROUTER_DIRECTIVES, Routes} from "@angular/router";
+import {ROUTER_DIRECTIVES, Routes/*, Router*/} from "@angular/router";
 import {OverviewComponent} from "./dashboard/overview.component";
-import {ReferencesComponent} from "./references/references-page.component";
+import {ReferencesPageComponent} from "./references/references-page.component";
 import {DashboardWebServicesComponent} from "./dashboard/dashboard-web-services.component";
 import {MonitoringDataService} from "./shared/monitoring-data.service";
 import {DashboardBackupsComponent} from "./dashboard/dashboard-backups.component";
@@ -25,10 +25,10 @@ import {DBFileSizesComponent} from "./reports/dbfilesizes.component";
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a [routerLink]="['OverviewPage']" class="navigationLinkButton">Обзор</a></li>
+                        <li><a [routerLink]="['overview-page']" class="navigationLinkButton">Обзор</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a [routerLink]="['ReferencesPage']">Справочники</a></li>
+                        <li><a [routerLink]="['references-page']">Справочники</a></li>
                     </ul>
                 </div>
     		</div>
@@ -38,7 +38,7 @@ import {DBFileSizesComponent} from "./reports/dbfilesizes.component";
                 <div class="col-sm-3 col-md-2 sidebar">
                     <ul class="nav nav-sidebar">
                         <li>
-                            <a [routerLink]="['WebServices']"
+                            <a [routerLink]="['dashboard-web-services']"
                                 class="btn" 
                                 [ngClass]="{
                                     'btn-danger': wsStatus === 'danger', 
@@ -49,7 +49,7 @@ import {DBFileSizesComponent} from "./reports/dbfilesizes.component";
                             </a>
                         </li>
                         <li>
-                            <a [routerLink]="['BackupsPage']"
+                            <a [routerLink]="['dashboard-backups-page']"
                                 class="btn" 
                                 [ngClass]="{
                                     'btn-danger': backupStatus === 'danger', 
@@ -62,10 +62,10 @@ import {DBFileSizesComponent} from "./reports/dbfilesizes.component";
                     </ul>
                     <ul class="nav nav-sidebar">
                         <li>
-                            <a [routerLink]="['SchemePage']" class="btn">Ноды-базы</a>
+                            <a [routerLink]="['scheme-page']" class="btn">Ноды-базы</a>
                         </li>
                         <li>
-                            <a [routerLink]="['DBFileSizesPage']" class="btn">Размеры баз данных</a>
+                            <a [routerLink]="['db-file-sizes-page']" class="btn">Размеры баз данных</a>
                         </li>
                     </ul>
                 </div>
@@ -81,33 +81,26 @@ import {DBFileSizesComponent} from "./reports/dbfilesizes.component";
 @Routes([
     {
         path: '/overview-page',
-        name: 'OverviewPage',
-        component: OverviewComponent,
-        useAsDefault: true
+        component: OverviewComponent
     },
     {
-        path: '/references-page/...',
-        name: 'ReferencesPage',
-        component: ReferencesComponent
+        path: '/references-page',
+        component: ReferencesPageComponent
     },
     {
         path: '/dashboard-web-services',
-        name: 'WebServices',
         component: DashboardWebServicesComponent
     },
     {
-        path: '/dashboard-backups-page/...',
-        name: 'BackupsPage',
+        path: '/dashboard-backups-page',
         component: DashboardBackupsComponent
     },
     {
         path: '/scheme-page',
-        name: 'SchemePage',
         component: SchemeComponent
     },
     {
         path: '/db-file-sizes-page',
-        name: 'DBFileSizesPage',
         component: DBFileSizesComponent
     }
 ])
@@ -115,7 +108,10 @@ export class AppComponent implements OnInit {
     wsStatus: string;
     backupStatus: string;
 
-    constructor(private _dataService: MonitoringDataService) {
+    constructor(
+//        private _router: Router,
+        private _dataService: MonitoringDataService
+    ) {
         this._dataService.web_services_status$.subscribe(value => {
             this.wsStatus = value;
         });
@@ -123,9 +119,10 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this._dataService.getData();
+//        this._router.navigate(['/dashboard-web-services']);
     }
 
     onNavigateToWS() {
-        //this._router.navigate(['WebServices']);
+//        this._router.navigate(['/dashboard-web-services']);
     }
 }
