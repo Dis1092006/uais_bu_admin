@@ -7,7 +7,7 @@ import {DateFormatPipe} from "../shared/date-format.pipe";
 @Component({
 	selector: 'dashboard-web-services',
 	template: `
-		<h1 class="page-header">Web-сервисы</h1>
+		<h2 class="page-header">Web-сервисы</h2>
 		<button (click)="onRefreshData()">Refresh</button>
 		<div>
 			<div class="table-responsive">

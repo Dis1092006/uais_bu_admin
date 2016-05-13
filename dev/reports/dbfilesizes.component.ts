@@ -7,7 +7,7 @@ import {Calendar} from 'primeng/primeng';
     selector: 'db-file-sizes',
     template: `
         <p-calendar [(ngModel)]="dateValue" dateFormat="dd.mm.yy" monthNavigator="true" yearNavigator="true"></p-calendar>
-        <button pButton type="button" icon="fa-refresh" (click)="onRefrechClick()" label="Обновить"></button>
+        <button pButton type="button" icon="fa-refresh" (click)="onRefreshClick()" label="Обновить"></button>
         <div class="table-responsive" [innerHTML]="dbFileSizesTable">
         </div>
      `,
@@ -38,10 +38,10 @@ export class DBFileSizesComponent implements OnInit{
     }
 
     ngOnInit() {
-	    this.onRefrechClick();
+	    this.onRefreshClick();
     }
 
-	onRefrechClick() {
+	onRefreshClick() {
 		this._reportsService.loadDBFileSizesTable(this.dateValue.split('.').reverse().join('-'));
 	}
 }

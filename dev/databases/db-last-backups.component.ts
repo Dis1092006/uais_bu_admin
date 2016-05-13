@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {DatabasesService, IBackup} from "./databases.service";
 import {DateFormatPipe} from "../shared/date-format.pipe";
@@ -6,6 +6,10 @@ import {DateFormatPipe} from "../shared/date-format.pipe";
 @Component({
 	selector: 'db-last-backups',
 	template: `
+        <button class="btn btn-default" (click)="onRefreshClick()">
+  			<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+  			Обновить
+  		</button>
         <div class="table-responsive">
             <table class="table table-bordered table-condensed">
                 <tr>
@@ -27,11 +31,18 @@ import {DateFormatPipe} from "../shared/date-format.pipe";
      `,
 	pipes: [DateFormatPipe]
 })
-export class DBLastBackupsComponent {
+export class DBLastBackupsComponent implements OnInit {
 	backups: Observable<IBackup[]>;
 
 	constructor(private _databasesService: DatabasesService) {
 		this.backups = this._databasesService.lastBackups$;
+	}
+
+	ngOnInit() {
+		this.onRefreshClick();
+	}
+
+	onRefreshClick() {
 		this._databasesService.loadLastBackups();
 	}
 }

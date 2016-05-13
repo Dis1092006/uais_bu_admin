@@ -9,7 +9,7 @@ import {DatabasesComponent} from "./databases.component";
 
 @Component({
     template: `
-		<h1 class="page-header">Справочники</h1>
+		<h2 class="page-header">Справочники</h2>
 		<ul class="nav nav-tabs">
             <li role="presentation" [ngClass]="{active: currentPage === 'zones-tab'}"><a [routerLink]="['zones-tab']" (click)="onTabClick('zones-tab')">Зоны</a></li>
             <li role="presentation" [ngClass]="{active: currentPage === 'nodes-tab'}"><a [routerLink]="['nodes-tab']" (click)="onTabClick('nodes-tab')">Ноды</a></li>

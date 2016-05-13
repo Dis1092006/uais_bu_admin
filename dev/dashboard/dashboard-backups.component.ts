@@ -7,7 +7,7 @@ import {DBLastBackupsComponent} from "../databases/db-last-backups.component";
 @Component({
 	selector: 'dashboard-backups-page',
 	template: `
-		<h1 class="page-header">Базы данных</h1>
+		<h2 class="page-header">Архивы баз данных</h2>
 		<ul class="nav nav-tabs">
             <li role="presentation" [ngClass]="{active: currentPage === 'db-last-backups-page'}"><a [routerLink]="['db-last-backups-page']" (click)="onTabClick('db-last-backups-page')">Последние архивы</a></li>
             <li role="presentation" [ngClass]="{active: currentPage === 'db-all-backups-page'}"><a [routerLink]="['db-all-backups-page']" (click)="onTabClick('db-all-backups-page')">Все архивы</a></li>
