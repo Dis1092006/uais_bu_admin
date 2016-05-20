@@ -54,6 +54,8 @@ export class DashboardWebServicesComponent implements OnInit {
 
 	constructor(private _router: Router, private _dataService: MonitoringDataService) {
 		this._dataService.data$.subscribe(() => {
+			//if typeof(this.data) === ''
+			console.log('typeof(this.data): ' + typeof(this.data));
 			this.data = this._dataService.data$;
 		});
 	}
