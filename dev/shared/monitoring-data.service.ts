@@ -22,19 +22,19 @@ export interface LostedRPHostData {
 
 @Injectable()
 export class MonitoringDataService {
-	data$: Observable<WSMonitoringData[]>;
-	web_services_status$: Observable<string>;
+	currentWSData$: Observable<WSMonitoringData[]>;
+	currentWSStatus$: Observable<string>;
 	lostedRPHostsData$: Observable<LostedRPHostData[]>;
 	lostedRPHostsStatus$: Observable<string>;
 	private _baseUrl: string;
-	private _dataObserver: Observer<WSMonitoringData[]>;
-	private _webServicesStatusObserver: Observer<string>;
+	private _currentWSDataObserver: Observer<WSMonitoringData[]>;
+	private _currentWSStatusObserver: Observer<string>;
 	private _lostedRPHostsObserver: Observer<LostedRPHostData[]>;
 	private _lostedRPHostsStatusObserver: Observer<string>;
 	private _dataStore: {
-		data: WSMonitoringData[],
+		currentWSData: WSMonitoringData[],
 		lostedRPHostsData: LostedRPHostData[],
-		currentStatus: string,
+		currentWSStatus: string,
 		lostedRPHostsStatus: string
 	};
 
@@ -43,23 +43,23 @@ export class MonitoringDataService {
 		//this._baseUrl  = 'http://10.126.200.41:9000/api/v1';
 		//this._baseUrl  = 'http://localhost:9000/api/v1';
 
-		this.data$ = new Observable(observer => this._dataObserver = observer).share();
-		this.web_services_status$ = new Observable(observer => this._webServicesStatusObserver = observer).share();
+		this.currentWSData$ = new Observable(observer => this._currentWSDataObserver = observer).share();
+		this.currentWSStatus$ = new Observable(observer => this._currentWSStatusObserver = observer).share();
 		this.lostedRPHostsData$ = new Observable(observer => this._lostedRPHostsObserver = observer).share();
 		this.lostedRPHostsStatus$ = new Observable(observer => this._lostedRPHostsStatusObserver = observer).share();
 
 		this._dataStore = {
-			data: [],
-			currentStatus: "none",
+			currentWSData: [],
+			currentWSStatus: "none",
 			lostedRPHostsData: [],
 			lostedRPHostsStatus: "none"
 		};
 
-		this.loadData();
+		this.refreshCurrentWSData();
 		var self = this;
 		setTimeout(
 			function refresh() {
-				self.loadData();
+				self.refreshCurrentWSData();
 				setTimeout(refresh, 60000);
 			},
 			60000
@@ -76,47 +76,56 @@ export class MonitoringDataService {
 		);
 	}
 
-	loadData() {
-		console.log("loadData, now = " + new Date().toTimeString());
-		this._http.get(`${this._baseUrl}/imd`).map(response => response.json()).subscribe(
-			data => {
-				this._dataStore.data = data.message;
-				if (this._dataObserver) {
-					//console.log("loadData, _dataObserver.next");
-					this._dataObserver.next(this._dataStore.data);
-				}
-
-				// Определение общего статуса мониторинга web-сервисов.
-				this._dataStore.currentStatus = "none";
-				this._dataStore.data.forEach((item) => {
-				    if (item.Status === 'Internal Server Error' || item.Status === 'Not Found' || item.Status === 'Bad Request' || item.Status === 'Conflict' || item.Status === 'Forbidden') {
-						this._dataStore.currentStatus = "danger";
-				    }
-				    else if ((item.Status === 'Unauthorized' || +item.CheckDuration > 1) && this._dataStore.currentStatus !== "danger") {
-						this._dataStore.currentStatus = "warning";
-				    }
-					else if (this._dataStore.currentStatus !== "danger" && this._dataStore.currentStatus !== "warning") {
-						this._dataStore.currentStatus = "ok";
-					}
-				});
-				if (this._webServicesStatusObserver) {
-					//console.log("loadData, _webServicesStatusObserver.next");
-					this._webServicesStatusObserver.next(this._dataStore.currentStatus);
-				}
-			},
-			error => console.log('Could not load data. Error: ' + JSON.stringify(error)));
+	loadCurrentWSData(): Observable<any> {
+		console.log("loadCurrentWSData, now = " + new Date().toTimeString());
+		return this._http.get(`${this._baseUrl}/imd`)
+			.map(response => response.json())
+			.catch(error => {
+				console.error(error);
+				return Observable.throw(error.json());
+			});
 	}
 
-	getData() {
-		console.log("getData, now = " + new Date().toTimeString());
-		if (this._dataObserver) {
-			console.log("getData, _dataObserver.next");
-			this._dataObserver.next(this._dataStore.data);
-		}
-		if (this._webServicesStatusObserver) {
-			console.log("getData, _webServicesStatusObserver.next");
-			this._webServicesStatusObserver.next(this._dataStore.currentStatus);
-		}
+	refreshCurrentWSData() {
+		console.log("refreshCurrentWSData, now = " + new Date().toTimeString());
+		this.loadCurrentWSData()
+			.subscribe(
+				data => {
+					this._dataStore.currentWSData = data.message;
+					if (this._currentWSDataObserver) {
+						//console.log("loadData, _dataObserver.next");
+						this._currentWSDataObserver.next(this._dataStore.currentWSData);
+					}
+
+					// Определение общего статуса мониторинга web-сервисов.
+					this._dataStore.currentWSStatus = "none";
+					this._dataStore.currentWSData.forEach((item) => {
+						if (item.Status === 'Internal Server Error' || item.Status === 'Not Found' || item.Status === 'Bad Request' || item.Status === 'Conflict' || item.Status === 'Forbidden') {
+							this._dataStore.currentWSStatus = "danger";
+						}
+						else if ((item.Status === 'Unauthorized' || +item.CheckDuration > 1) && this._dataStore.currentWSStatus !== "danger") {
+							this._dataStore.currentWSStatus = "warning";
+						}
+						else if (this._dataStore.currentWSStatus !== "danger" && this._dataStore.currentWSStatus !== "warning") {
+							this._dataStore.currentWSStatus = "ok";
+						}
+					});
+					if (this._currentWSStatusObserver) {
+						//console.log("loadData, _currentWSStatusObserver.next");
+						this._currentWSStatusObserver.next(this._dataStore.currentWSStatus);
+					}
+				},
+				error => console.log('Could not load current WS data. Error: ' + JSON.stringify(error)));
+	}
+
+	getCurrentWSData() {
+		console.log("getCurrentWSData, now = " + new Date().toTimeString());
+		return this._dataStore.currentWSData;
+	}
+
+	getCurrentWSStatus() {
+		console.log("getCurrentWSStatus, now = " + new Date().toTimeString());
+		return this._dataStore.currentWSStatus;
 	}
 
 	loadLostedRPHostData(): Observable<any> {
@@ -136,6 +145,10 @@ export class MonitoringDataService {
 				data => {
 					console.log("setLostedRPHostData, now = " + new Date().toTimeString());
 					this._dataStore.lostedRPHostsData = data;
+					if (this._lostedRPHostsObserver) {
+						this._lostedRPHostsObserver.next(this._dataStore.lostedRPHostsData);
+					}
+
 					// Определение общего статуса мониторинга потерянных процессов rphost.
 					this._dataStore.lostedRPHostsStatus = "ok";
 					console.log('this._dataStore.lostedRPHostsData.length = ' + this._dataStore.lostedRPHostsData.length);
@@ -145,8 +158,12 @@ export class MonitoringDataService {
 					else if (this._dataStore.lostedRPHostsData.length > 0) {
 						this._dataStore.lostedRPHostsStatus = "warning";
 					}
-				}//,
-				//error => console.log('Could not load nodes. Error: ' + JSON.stringify(error))
+					if (this._lostedRPHostsStatusObserver) {
+						//console.log("loadData, _currentWSStatusObserver.next");
+						this._lostedRPHostsStatusObserver.next(this._dataStore.lostedRPHostsStatus);
+					}
+				},
+				error => console.log('Could not load losted rphosts data. Error: ' + JSON.stringify(error))
 			);
 	}
 

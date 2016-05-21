@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {ROUTER_DIRECTIVES} from "@angular/router";
-import {MonitoringDataService, LostedRPHostData} from "./shared/monitoring-data.service";
+import {MonitoringDataService} from "./shared/monitoring-data.service";
 
 @Component({
 	selector: 'uais_bu_admin-sidebar',
@@ -11,9 +11,9 @@ import {MonitoringDataService, LostedRPHostData} from "./shared/monitoring-data.
                     <a [routerLink]="['dashboard-web-services']"
                         class="btn" 
                         [ngClass]="{
-                            'btn-danger': wsStatus === 'danger', 
-                            'btn-warning': wsStatus === 'warning',
-                            'btn-success': wsStatus === 'ok'
+                            'btn-danger': currentWSStatus === 'danger', 
+                            'btn-warning': currentWSStatus === 'warning',
+                            'btn-success': currentWSStatus === 'ok'
                         }"
                     >Web-сервисы
                     </a>
@@ -54,27 +54,18 @@ import {MonitoringDataService, LostedRPHostData} from "./shared/monitoring-data.
 	directives: [ROUTER_DIRECTIVES]
 })
 export class SidebarComponent implements OnInit {
-	wsStatus: string;
-	backupStatus: string;
+	currentWSStatus: string = 'none';
+	backupStatus: string = 'none';
 	lostedRPHostsStatus: string = 'none';
 
-	constructor(private _dataService: MonitoringDataService) {
-		this._dataService.web_services_status$.subscribe(value => {
-			this.wsStatus = value;
-		});
-	}
+	constructor(private _dataService: MonitoringDataService) { }
 	
 	ngOnInit() {
-		this._dataService.getData();
-
-		this.lostedRPHostsStatus = this._dataService.getLostedRPHostStatus();
-		var self = this;
-		setTimeout(
-			function refresh() {
-				self.lostedRPHostsStatus = self._dataService.getLostedRPHostStatus();
-				setTimeout(refresh, 60000);
-			},
-			60000
-		);
+		this._dataService.currentWSStatus$.subscribe(value => {
+			this.currentWSStatus = this._dataService.getCurrentWSStatus();
+		});
+		this._dataService.lostedRPHostsStatus$.subscribe(value => {
+			this.lostedRPHostsStatus = this._dataService.getLostedRPHostStatus();
+		});
 	}
 }

@@ -1,5 +1,4 @@
 import {Component, OnInit} from "@angular/core";
-import {Observable} from "rxjs/Observable";
 import {MonitoringDataService, LostedRPHostData} from "../shared/monitoring-data.service";
 import {DateFormatPipe} from "../shared/date-format.pipe";
 
@@ -32,15 +31,11 @@ export class DashboardLostedRPHostsComponent implements OnInit {
 	constructor(private _dataService: MonitoringDataService) { }
 
 	ngOnInit() {
+		this._dataService.lostedRPHostsData$.subscribe(value => {
+			console.log('typeof(this.data): ' + typeof(value));
+			this.lostedRPHostsData = this._dataService.getLostedRPHostData();
+		});
 		this.onRefreshData();
-		var self = this;
-		setTimeout(
-			function refresh() {
-				self.onRefreshData();
-				setTimeout(refresh, 60000);
-			},
-			60000
-		);
 	}
 
 	onRefreshData() {

@@ -1,7 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {Router} from "@angular/router";
-import {Observable} from "rxjs/Observable";
-import {WSMonitoringData, MonitoringDataService} from "../shared/monitoring-data.service";
+import {MonitoringDataService, WSMonitoringData} from "../shared/monitoring-data.service";
 import {DateFormatPipe} from "../shared/date-format.pipe";
 
 @Component({
@@ -13,7 +11,7 @@ import {DateFormatPipe} from "../shared/date-format.pipe";
 			<div class="table-responsive">
                 <table class="table table-bordered table-condensed">
                     <tr 
-                    	*ngFor="let item of data | async" 
+                    	*ngFor="let item of currentWSData" 
                     	[ngClass]="{
                     		warning: item.Status !== 'OK', 
                     		danger: item.Status === 'Internal Server Error' || item.Status === 'Not Found' || item.Status === 'Bad Request' || item.Status === 'Conflict' || item.Status === 'Forbidden'
@@ -50,21 +48,19 @@ import {DateFormatPipe} from "../shared/date-format.pipe";
 	pipes: [DateFormatPipe]
 })
 export class DashboardWebServicesComponent implements OnInit {
-	data: Observable<WSMonitoringData[]>;
+	currentWSData: WSMonitoringData[];
 
-	constructor(private _router: Router, private _dataService: MonitoringDataService) {
-		this._dataService.data$.subscribe(() => {
-			//if typeof(this.data) === ''
-			console.log('typeof(this.data): ' + typeof(this.data));
-			this.data = this._dataService.data$;
-		});
-	}
+	constructor(private _dataService: MonitoringDataService) { }
 
 	ngOnInit() {
-		this._dataService.getData();
+		this._dataService.currentWSData$.subscribe(value => {
+			console.log('typeof(this.data): ' + typeof(value));
+			this.currentWSData = this._dataService.getCurrentWSData();
+		});
+		this.onRefreshData();
 	}
 
 	onRefreshData() {
-		this._dataService.loadData();
+		this.currentWSData = this._dataService.getCurrentWSData();
 	}
 }
